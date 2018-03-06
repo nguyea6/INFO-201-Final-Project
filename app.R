@@ -1,7 +1,7 @@
 # app.R: Sets working directory and initializes shiny application
 
 # Set working directory
-setwd("")
+setwd("C:/Users/david/Desktop/Info 201/INFO-201-Final-Project")
 
 # Libraries
 library(dplyr)

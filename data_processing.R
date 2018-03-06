@@ -1,5 +1,4 @@
 # data_processing.R: Contains common variables and functions
-setwd("C:/Users/david/Desktop/Info 201/INFO-201-Final-Project")
 
 # processing the data from the files
 Green.way.sw.26th <- read.csv("data/bicycle/26th_Ave_SW_Greenway_at_SW_Oregon_St.csv")
@@ -37,3 +36,5 @@ Elliott.bay.myrtle.edwards$Date <- format(as.POSIXct(Elliott.bay.myrtle.edwards$
 
 Fremont.bridge$Time <- format(as.POSIXct(Fremont.bridge$Date,format="%m/%d/%Y %H:%M:%S", tz = ""),"%H:%M:%S")
 Fremont.bridge$Date <- format(as.POSIXct(Fremont.bridge$Date,format="%m/%d/%Y %H:%M:%S", tz = ""),"%m/%d/%Y")
+
+x <- merge(Green.way.ne.39th, Green.way.nw.58th)
