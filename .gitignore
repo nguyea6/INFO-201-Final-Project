@@ -38,4 +38,4 @@ vignettes/*.pdf
 # Other
 /*.kate-swp/
 .directory
-/*.~lock*/
+/*#/
