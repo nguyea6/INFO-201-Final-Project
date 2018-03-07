@@ -13,7 +13,7 @@ CleanDataSet <- function(data.frame, col.name, lat, long) {
   #   col.name: The name of the column containing desired information.
   #   lat: A latitude corresponding to the data frame's data.
   #   long: A longitude corresponding to the data frame's data.
-  data.set %>%
+  data.frame %>%
     mutate(
       traffic.vol = !!rlang::sym(col.name),
       location.name = col.name,
