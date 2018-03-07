@@ -110,4 +110,16 @@ avg.traffic.ped.bicycle.by.weekday <- traffic.ped.bicycle %>%
     lat = first(lat),
     long = first(long)
   ) %>%
-  select("Weekday", "lat", "long", "location.name", "avg.traffic.vol")
+  select("Weekday", "location.name", "lat", "long", "avg.traffic.vol")# %>%
+#   arrange( #https://stackoverflow.com/a/46129338
+#     factor(Weekday, levels = c("Sunday", "Monday", "Tuesday", "Wednesday",
+#       "Thursday", "Friday", "Saturday")
+#     )
+#   )
+
+  #https://sebastiansauer.github.io/ordering-bars/
+  avg.traffic.ped.bicycle.by.weekday$Weekday <- factor(
+    avg.traffic.ped.bicycle.by.weekday$Weekday,
+    levels = c("Sunday", "Monday", "Tuesday", "Wednesday",
+      "Thursday", "Friday", "Saturday")
+  )

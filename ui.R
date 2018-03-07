@@ -23,15 +23,25 @@ ui <- fluidPage(
     ),
 
     tabPanel("Map",
-      pre("Heat map goes here")
+      pre("Heat map goes here"),
+      plotOutput('seattle.map')
     ),
 
     tabPanel("Graph",
-      pre("Graph of traffic vols per street vs date goes here")
-    )
+      pre("Graph of traffic vols per street vs date goes here"),
+      plotOutput('weekday.traffic.graph')
+    ),
 
     tabPanel("Analysis",
       pre("Analysis goes here")
+    ),
+
+    tabPanel("Citations", #https://shiny.rstudio.com/articles/tag-glossary.html
+      #ggmaps
+      tags$blockquote("D. Kahle and H. Wickham. ggmap: Spatial Visualization with ggplot2.
+        The R Journal, 5(1), 144-161. URL
+        http://journal.r-project.org/archive/2013-1/kahle-wickham.pdf",
+        cite = "D. Kahle and H. Wickham")
     )
   )
 )
