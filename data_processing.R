@@ -1,6 +1,21 @@
 # data_processing.R: Contains common variables and functions
 
-CleanDataSet <- function(data.set, col.name, lat, long) {
+require(dplyr)
+require(tidyr)
+require(ggplot2)
+require(ggmap)
+require(rgdal)
+
+CleanDataSet <- function(data.frame, col.name, lat, long) {
+  # Returns a data frame with the data of the given data
+  # frame organized into neat columns to prepare it for
+  # joining with other data frames.
+  #
+  # Args:
+  #   data.set: The given data frame.
+  #   col.name: The name of the column containing desired information.
+  #   lat: A latitude corresponding to the data frame's data.
+  #   long: A longitude corresponding to the data frame's data.
   data.set %>%
     mutate(
       traffic.vol = !!rlang::sym(col.name),
@@ -99,3 +114,21 @@ avg.traffic.ped.bicycle.by.weekday <- traffic.ped.bicycle %>%
     long = first(long)
   ) %>%
   select("Weekday", "lat", "long", "location.name", "avg.traffic.vol")
+
+
+# https://data.seattle.gov/dataset/City-Of-Seattle-Zoning/2hat-teay
+# https://gist.github.com/lmullen/8375785
+seattle.shape.data <- readOGR("data/City_of_Seattle_Zoning/WGS84/", "City_of_Seattle_Zoning") %>%
+  fortify()
+
+seattle.street.map <- ggplot() +
+  geom_path(
+    data = seattle.shape.data,
+    aes(
+      x = long,
+      y = lat,
+      group = group
+    ),
+    color = "light gray"
+  ) +
+  coord_map()

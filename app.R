@@ -9,6 +9,8 @@ library(tidyr)
 library(ggplot2)
 library(maps)
 library(shiny)
+library(rgdal)
+library(ggmap)
 
 source("ui.R")
 source("server.R")
