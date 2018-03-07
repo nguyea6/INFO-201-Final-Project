@@ -1,6 +1,7 @@
 require(ggplot2)
 require(ggmap)
 require(rgdal)
+require(dplyr)
 
 # https://data.seattle.gov/dataset/City-Of-Seattle-Zoning/2hat-teay
 # https://gist.github.com/lmullen/8375785

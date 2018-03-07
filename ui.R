@@ -1,6 +1,8 @@
 # ui.R: Defines user interface
 
-source("data_processing.R")
+source("traffic_data_processing.R")
+
+require(shiny)
 
 ui <- fluidPage(
 
