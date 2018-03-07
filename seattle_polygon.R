@@ -9,6 +9,9 @@ library("ggmap")
 #   utah.points = fortify(utah, region="id")
 #   utah.df = join(utah.points, utah@data, by="id")
 
+# https://gist.github.com/lmullen/8375785
+# https://data.seattle.gov/dataset/City-Of-Seattle-Zoning/2hat-teay
+
 seattle.shape <- readOGR("/home/andrew/Documents/INFO 201/INFO-201-Final-Project/data/City_of_Seattle_Zoning/WGS84/", "City_of_Seattle_Zoning")
 #seattle.shape <- readOGR("/home/andrew/Documents/INFO 201/INFO-201-Final-Project/data/Street_Network_Database/WGS84/", "Street_Network_Database.StName")
 #seattle.shape <- readOGR("/home/andrew/Documents/INFO 201/INFO-201-Final-Project/data/Shorelines/WGS84/", "Shorelines")
