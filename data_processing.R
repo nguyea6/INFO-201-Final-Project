@@ -20,10 +20,23 @@ traffic.26th.ave <- read.csv("data/bicycle/26th_Ave_SW_Greenway_at_SW_Oregon_St.
 traffic.2nd.ave <- read.csv("data/bicycle/2nd_Ave_Cycle_Track_North_of_Marion_St.csv", stringsAsFactors = FALSE) %>%
   select("Date", "X2nd.Ave.Cycletrack")
 
-traffic.ped.bicycle <- full_join(traffic.greenway, traffic.fremont.bridge, by = "Date") %>%
+traffic.ped.bicycle <-
+  full_join(traffic.greenway, traffic.fremont.bridge, by = "Date") %>%
   full_join(traffic.elliot.bay.trail, by = "Date") %>%
   full_join(traffic.burke.gilman.trail, by = "Date") %>%
   full_join(traffic.broadway, by = "Date") %>%
   full_join(traffic.39th.ave, by = "Date") %>%
   full_join(traffic.26th.ave, by = "Date") %>%
-  full_join(traffic.2nd.ave, by = "Date")
+  full_join(traffic.2nd.ave, by = "Date") %>%
+  separate(Date, into = c("Date", "Time", "AMPM"), sep = " ") %>%
+  mutate(Time = paste(Time, AMPM)) %>%
+  select("Date", "Time",
+    "NW.58th.St.Greenway.st.22nd.Ave.NW.Total",
+    "Fremont.Bridge.Sidewalk",
+    "Elliott.Bay.Trail.in.Myrtle.Edwards.Park.Total",
+    "BGT.North.of.NE.70th.Total",
+    "Broadway.Cycle.Track.North.Of.E.Union.St.Total",
+    "X39th.Ave.NE.Greenway.at.NE.62nd.St.Total",
+    "X26th.Ave.SW.Greenway.at.SW.Oregon.St.Total",
+    "X2nd.Ave.Cycletrack"
+  )
