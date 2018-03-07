@@ -1,6 +1,15 @@
 # data_processing.R: Contains common variables and functions
 
-CleanDataSet <- function(data.set, col.name, lat, long) {
+CleanDataSet <- function(data.frame, col.name, lat, long) {
+  # Returns a data frame with the data of the given data
+  # frame organized into neat columns to prepare it for
+  # joining with other data frames.
+  #
+  # Args:
+  #   data.set: The given data frame.
+  #   col.name: The name of the column containing desired information.
+  #   lat: A latitude corresponding to the data frame's data.
+  #   long: A longitude corresponding to the data frame's data.
   data.set %>%
     mutate(
       traffic.vol = !!rlang::sym(col.name),
