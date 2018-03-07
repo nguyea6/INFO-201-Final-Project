@@ -1,5 +1,11 @@
 # data_processing.R: Contains common variables and functions
 
+require(dplyr)
+require(ggplot2)
+require(ggmap)
+require(rgdal)
+require(tidyr)
+
 CleanDataSet <- function(data.frame, col.name, lat, long) {
   # Returns a data frame with the data of the given data
   # frame organized into neat columns to prepare it for
@@ -108,3 +114,22 @@ avg.traffic.ped.bicycle.by.weekday <- traffic.ped.bicycle %>%
     long = first(long)
   ) %>%
   select("Weekday", "lat", "long", "location.name", "avg.traffic.vol")
+
+
+# https://data.seattle.gov/dataset/City-Of-Seattle-Zoning/2hat-teay
+# https://gist.github.com/lmullen/8375785
+seattle.shape.data <- readOGR("/home/andrew/Documents/INFO 201/INFO-201-Final-Project/data/City_of_Seattle_Zoning/WGS84/", "City_of_Seattle_Zoning") %>%
+  fortify()
+
+  map <- ggplot() +
+    geom_path(
+      data = seattle.shape.data,
+      aes(
+        x = long,
+        y = lat,
+        group = group
+        #fill = "white"
+      ),
+      color = "gray"
+    ) +
+    coord_map()
