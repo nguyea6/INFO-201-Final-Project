@@ -2,9 +2,6 @@
 
 require(dplyr)
 require(tidyr)
-require(ggplot2)
-require(ggmap)
-require(rgdal)
 
 CleanDataSet <- function(data.frame, col.name, lat, long) {
   # Returns a data frame with the data of the given data
@@ -114,21 +111,3 @@ avg.traffic.ped.bicycle.by.weekday <- traffic.ped.bicycle %>%
     long = first(long)
   ) %>%
   select("Weekday", "lat", "long", "location.name", "avg.traffic.vol")
-
-
-# https://data.seattle.gov/dataset/City-Of-Seattle-Zoning/2hat-teay
-# https://gist.github.com/lmullen/8375785
-seattle.shape.data <- readOGR("data/City_of_Seattle_Zoning/WGS84/", "City_of_Seattle_Zoning") %>%
-  fortify()
-
-seattle.street.map <- ggplot() +
-  geom_path(
-    data = seattle.shape.data,
-    aes(
-      x = long,
-      y = lat,
-      group = group
-    ),
-    color = "light gray"
-  ) +
-  coord_map()
