@@ -1,40 +1,42 @@
 # data_processing.R: Contains common variables and functions
 
-# processing the data from the files
-Green.way.sw.26th <- read.csv("data/bicycle/26th_Ave_SW_Greenway_at_SW_Oregon_St.csv")
-Green.way.ne.39th <- read.csv("data/bicycle/39th_Ave_NE_Greenway_at_NE_62nd_St.csv")
-North.marion <- read.csv("data/bicycle/2nd_Ave_Cycle_Track_North_of_Marion_St.csv")
-Broadway.cycle <- read.csv("data/bicycle/Broadway_Cycle_Track_North_Of_E_Union_St.csv")
-Burke.gilman <- read.csv("data/bicycle/Burke_Gilman_Trail_north_of_NE_70th_St_Bike_and_Ped_Counter.csv")
-Elliott.bay.myrtle.edwards <- read.csv("data/bicycle/Elliott_Bay_Trail_in_Myrtle_Edwards_Park.csv")
-Fremont.bridge <- read.csv("data/bicycle/Fremont_Bridge_Hourly_Bicycle_Counts_by_Month_October_2012_to_present.csv")
-Green.way.nw.58th <- read.csv("data/bicycle/NW_58th_St_Greenway_at_22nd_Ave_NW_Bike_Counter.csv")
+traffic.greenway <- read.csv("data/bicycle/NW_58th_St_Greenway_at_22nd_Ave_NW_Bike_Counter.csv", stringsAsFactors = FALSE) %>%
+  select("Date", "NW.58th.St.Greenway.st.22nd.Ave.NW.Total")
 
+traffic.fremont.bridge <- read.csv("data/bicycle/Fremont_Bridge_Hourly_Bicycle_Counts_by_Month_October_2012_to_present.csv", stringsAsFactors = FALSE) %>%
+  mutate(Fremont.Bridge.Sidewalk = Fremont.Bridge.West.Sidewalk + Fremont.Bridge.East.Sidewalk) %>%
+  select("Date", "Fremont.Bridge.Sidewalk")
 
+traffic.elliot.bay.trail <- read.csv("data/bicycle/Elliott_Bay_Trail_in_Myrtle_Edwards_Park.csv", stringsAsFactors = FALSE) %>%
+  select("Date", "Elliott.Bay.Trail.in.Myrtle.Edwards.Park.Total")
+traffic.burke.gilman.trail <- read.csv("data/bicycle/Burke_Gilman_Trail_north_of_NE_70th_St_Bike_and_Ped_Counter.csv", stringsAsFactors = FALSE) %>%
+  select("Date", "BGT.North.of.NE.70th.Total")
+traffic.broadway <- read.csv("data/bicycle/Broadway_Cycle_Track_North_Of_E_Union_St.csv", stringsAsFactors = FALSE) %>%
+  select("Date", "Broadway.Cycle.Track.North.Of.E.Union.St.Total")
+traffic.39th.ave <- read.csv("data/bicycle/39th_Ave_NE_Greenway_at_NE_62nd_St.csv", stringsAsFactors = FALSE) %>%
+  select("Date", "X39th.Ave.NE.Greenway.at.NE.62nd.St.Total")
+traffic.26th.ave <- read.csv("data/bicycle/26th_Ave_SW_Greenway_at_SW_Oregon_St.csv", stringsAsFactors = FALSE) %>%
+  select("Date", "X26th.Ave.SW.Greenway.at.SW.Oregon.St.Total")
+traffic.2nd.ave <- read.csv("data/bicycle/2nd_Ave_Cycle_Track_North_of_Marion_St.csv", stringsAsFactors = FALSE) %>%
+  select("Date", "X2nd.Ave.Cycletrack")
 
-# split cloumn date into date and time
-Green.way.sw.26th$Time <- format(as.POSIXct(Green.way.sw.26th$Date,format="%m/%d/%Y %H:%M:%S", tz = ""),"%H:%M:%S")
-Green.way.sw.26th$Date <- format(as.POSIXct(Green.way.sw.26th$Date,format="%m/%d/%Y %H:%M:%S", tz = ""),"%m/%d/%Y")
-
-Green.way.ne.39th$Time <- format(as.POSIXct(Green.way.ne.39th$Date,format="%m/%d/%Y %H:%M:%S", tz = ""),"%H:%M:%S")
-Green.way.ne.39th$Date <- format(as.POSIXct(Green.way.ne.39th$Date,format="%m/%d/%Y %H:%M:%S", tz = ""),"%m/%d/%Y")
-
-Green.way.nw.58th$Time <- format(as.POSIXct(Green.way.nw.58th$Date,format="%m/%d/%Y %H:%M:%S", tz = ""),"%H:%M:%S")
-Green.way.nw.58th$Date <- format(as.POSIXct(Green.way.nw.58th$Date,format="%m/%d/%Y %H:%M:%S", tz = ""),"%m/%d/%Y")
-
-North.marion$Time <- format(as.POSIXct(North.marion$Date,format="%m/%d/%Y %H:%M:%S", tz = ""),"%H:%M:%S")
-North.marion$Date <- format(as.POSIXct(North.marion$Date,format="%m/%d/%Y %H:%M:%S", tz = ""),"%m/%d/%Y")
-
-Broadway.cycle$Time <- format(as.POSIXct(Broadway.cycle$Date,format="%m/%d/%Y %H:%M:%S", tz = ""),"%H:%M:%S")
-Broadway.cycle$Date <- format(as.POSIXct(Broadway.cycle$Date,format="%m/%d/%Y %H:%M:%S", tz = ""),"%m/%d/%Y")
-
-Burke.gilman$Time <- format(as.POSIXct(Burke.gilman$Date,format="%m/%d/%Y %H:%M:%S", tz = ""),"%H:%M:%S")
-Burke.gilman$Date <- format(as.POSIXct(Burke.gilman$Date,format="%m/%d/%Y %H:%M:%S", tz = ""),"%m/%d/%Y")
-
-Elliott.bay.myrtle.edwards$Time <- format(as.POSIXct(Elliott.bay.myrtle.edwards$Date,format="%m/%d/%Y %H:%M:%S", tz = ""),"%H:%M:%S")
-Elliott.bay.myrtle.edwards$Date <- format(as.POSIXct(Elliott.bay.myrtle.edwards$Date,format="%m/%d/%Y %H:%M:%S", tz = ""),"%m/%d/%Y")
-
-Fremont.bridge$Time <- format(as.POSIXct(Fremont.bridge$Date,format="%m/%d/%Y %H:%M:%S", tz = ""),"%H:%M:%S")
-Fremont.bridge$Date <- format(as.POSIXct(Fremont.bridge$Date,format="%m/%d/%Y %H:%M:%S", tz = ""),"%m/%d/%Y")
-
-x <- merge(Green.way.ne.39th, Green.way.nw.58th)
+traffic.ped.bicycle <-
+  full_join(traffic.greenway, traffic.fremont.bridge, by = "Date") %>%
+  full_join(traffic.elliot.bay.trail, by = "Date") %>%
+  full_join(traffic.burke.gilman.trail, by = "Date") %>%
+  full_join(traffic.broadway, by = "Date") %>%
+  full_join(traffic.39th.ave, by = "Date") %>%
+  full_join(traffic.26th.ave, by = "Date") %>%
+  full_join(traffic.2nd.ave, by = "Date") %>%
+  separate(Date, into = c("Date", "Time", "AMPM"), sep = " ") %>%
+  mutate(Time = paste(Time, AMPM)) %>%
+  select("Date", "Time",
+    "NW.58th.St.Greenway.st.22nd.Ave.NW.Total",
+    "Fremont.Bridge.Sidewalk",
+    "Elliott.Bay.Trail.in.Myrtle.Edwards.Park.Total",
+    "BGT.North.of.NE.70th.Total",
+    "Broadway.Cycle.Track.North.Of.E.Union.St.Total",
+    "X39th.Ave.NE.Greenway.at.NE.62nd.St.Total",
+    "X26th.Ave.SW.Greenway.at.SW.Oregon.St.Total",
+    "X2nd.Ave.Cycletrack"
+  )
