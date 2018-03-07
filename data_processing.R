@@ -94,5 +94,8 @@ avg.traffic.ped.bicycle.by.weekday <- traffic.ped.bicycle %>%
   drop_na() %>%
   group_by(Weekday, location.name) %>%
   summarize(
-    avg.traffic.vol = mean(traffic.vol)
-  )
+    avg.traffic.vol = mean(traffic.vol),
+    lat = first(lat),
+    long = first(long)
+  ) %>%
+  select("Weekday", "lat", "long", "location.name", "avg.traffic.vol")
