@@ -1,77 +1,98 @@
 # data_processing.R: Contains common variables and functions
 
-traffic.greenway <- read.csv("data/bicycle/NW_58th_St_Greenway_at_22nd_Ave_NW_Bike_Counter.csv", stringsAsFactors = FALSE) %>%
-  select("Date", "NW.58th.St.Greenway.st.22nd.Ave.NW.Total") #%>%
-  #mutate(lat = 47.6709191, long = -122.3869181)
+CleanDataSet <- function(data.set, col.name, lat, long) {
+  data.set %>%
+    mutate(
+      traffic.vol = !!rlang::sym(col.name),
+      location.name = col.name,
+      lat = lat,
+      long = long
+    ) %>%
+    select("Date", "location.name", "lat", "long", "traffic.vol") %>%
+    return()
+}
 
-traffic.fremont.bridge <- read.csv("data/bicycle/Fremont_Bridge_Hourly_Bicycle_Counts_by_Month_October_2012_to_present.csv", stringsAsFactors = FALSE) %>%
-  mutate(Fremont.Bridge.Sidewalk = Fremont.Bridge.West.Sidewalk + Fremont.Bridge.East.Sidewalk) %>%
-  select("Date", "Fremont.Bridge.Sidewalk") #%>%
-  #mutate(lat = 47.6475338, long = -122.3519361)
+traffic.greenway <-
+  read.csv("data/bicycle/NW_58th_St_Greenway_at_22nd_Ave_NW_Bike_Counter.csv",
+    stringsAsFactors = FALSE) %>%
+  CleanDataSet("NW.58th.St.Greenway.st.22nd.Ave.NW.Total",
+    lat = 47.6709191, long = -122.3869181)
 
-traffic.elliot.bay.trail <- read.csv("data/bicycle/Elliott_Bay_Trail_in_Myrtle_Edwards_Park.csv", stringsAsFactors = FALSE) %>%
-  select("Date", "Elliott.Bay.Trail.in.Myrtle.Edwards.Park.Total")
-  #mutate(lat = 47.6080618, long = -122.3447558)
+traffic.fremont.bridge <-
+  read.csv("data/bicycle/Fremont_Bridge_Hourly_Bicycle_Counts_by_Month_October_2012_to_present.csv",
+    stringsAsFactors = FALSE) %>%
+  mutate(
+    Fremont.Bridge.Sidewalk =
+      Fremont.Bridge.West.Sidewalk + Fremont.Bridge.East.Sidewalk
+  ) %>%
+  CleanDataSet("Fremont.Bridge.Sidewalk",
+    lat = 47.6475338, long = -122.3519361)
 
-traffic.burke.gilman.trail <- read.csv("data/bicycle/Burke_Gilman_Trail_north_of_NE_70th_St_Bike_and_Ped_Counter.csv", stringsAsFactors = FALSE) %>%
-  select("Date", "BGT.North.of.NE.70th.Total") #%>%
-  #mutate(lat = 47.6799869, long =-122.2655913)
+traffic.elliot.bay.trail <-
+  read.csv("data/bicycle/Elliott_Bay_Trail_in_Myrtle_Edwards_Park.csv",
+    stringsAsFactors = FALSE) %>%
+  CleanDataSet("Elliott.Bay.Trail.in.Myrtle.Edwards.Park.Total",
+    lat = 47.6080618, long = -122.3447558)
 
-traffic.broadway <- read.csv("data/bicycle/Broadway_Cycle_Track_North_Of_E_Union_St.csv", stringsAsFactors = FALSE) %>%
-  select("Date", "Broadway.Cycle.Track.North.Of.E.Union.St.Total") #%>%
-  #mutate(lat = 47.6132426, long =-122.3211899)
+traffic.burke.gilman.trail <-
+  read.csv("data/bicycle/Burke_Gilman_Trail_north_of_NE_70th_St_Bike_and_Ped_Counter.csv",
+    stringsAsFactors = FALSE) %>%
+  CleanDataSet("BGT.North.of.NE.70th.Total",
+    lat = 47.6799869, long = -122.2655913)
 
-traffic.39th.ave <- read.csv("data/bicycle/39th_Ave_NE_Greenway_at_NE_62nd_St.csv", stringsAsFactors = FALSE) %>%
-  select("Date", "X39th.Ave.NE.Greenway.at.NE.62nd.St.Total") #%>%
-  #mutate(lat = 47.6739715, long =-122.2863352)
+traffic.broadway <-
+  read.csv("data/bicycle/Broadway_Cycle_Track_North_Of_E_Union_St.csv",
+    stringsAsFactors = FALSE) %>%
+  CleanDataSet("Broadway.Cycle.Track.North.Of.E.Union.St.Total",
+    lat = 47.6132426, long = -122.3211899)
 
-traffic.26th.ave <- read.csv("data/bicycle/26th_Ave_SW_Greenway_at_SW_Oregon_St.csv", stringsAsFactors = FALSE) %>%
-  select("Date", "X26th.Ave.SW.Greenway.at.SW.Oregon.St.Total") #%>%
-  #mutate(lat = 47.562903, long = -122.3676473)
+traffic.39th.ave <-
+  read.csv("data/bicycle/39th_Ave_NE_Greenway_at_NE_62nd_St.csv",
+    stringsAsFactors = FALSE) %>%
+  CleanDataSet("X39th.Ave.NE.Greenway.at.NE.62nd.St.Total",
+    lat = 47.6739715, long = -122.2863352)
 
-traffic.2nd.ave <- read.csv("data/bicycle/2nd_Ave_Cycle_Track_North_of_Marion_St.csv", stringsAsFactors = FALSE) %>%
-  select("Date", "X2nd.Ave.Cycletrack") #%>%
-  #mutate(lat = 47.604445, long =-122.3352528)
+traffic.26th.ave <-
+  read.csv("data/bicycle/26th_Ave_SW_Greenway_at_SW_Oregon_St.csv",
+    stringsAsFactors = FALSE) %>%
+  CleanDataSet("X26th.Ave.SW.Greenway.at.SW.Oregon.St.Total",
+    lat = 47.562903, long = -122.3676473)
 
-locations <- c(
-  "NW.58th.St.Greenway.st.22nd.Ave.NW.Total",
-  "Fremont.Bridge.Sidewalk",
-  "Elliott.Bay.Trail.in.Myrtle.Edwards.Park.Total",
-  "BGT.North.of.NE.70th.Total",
-  "Broadway.Cycle.Track.North.Of.E.Union.St.Total",
-  "X39th.Ave.NE.Greenway.at.NE.62nd.St.Total",
-  "X26th.Ave.SW.Greenway.at.SW.Oregon.St.Total",
-  "X2nd.Ave.Cycletrack"
-)
+traffic.2nd.ave <-
+  read.csv("data/bicycle/2nd_Ave_Cycle_Track_North_of_Marion_St.csv",
+    stringsAsFactors = FALSE) %>%
+  CleanDataSet("X2nd.Ave.Cycletrack",
+    lat = 47.604445, long = -122.3352528)
+
+# locations <- c(
+#   "NW.58th.St.Greenway.st.22nd.Ave.NW.Total",
+#   "Fremont.Bridge.Sidewalk",
+#   "Elliott.Bay.Trail.in.Myrtle.Edwards.Park.Total",
+#   "BGT.North.of.NE.70th.Total",
+#   "Broadway.Cycle.Track.North.Of.E.Union.St.Total",
+#   "X39th.Ave.NE.Greenway.at.NE.62nd.St.Total",
+#   "X26th.Ave.SW.Greenway.at.SW.Oregon.St.Total",
+#   "X2nd.Ave.Cycletrack"
+# )
 
 traffic.ped.bicycle <-
-  full_join(traffic.greenway, traffic.fremont.bridge, by = "Date") %>%
-  full_join(traffic.elliot.bay.trail, by = "Date") %>%
-  full_join(traffic.burke.gilman.trail, by = "Date") %>%
-  full_join(traffic.broadway, by = "Date") %>%
-  full_join(traffic.39th.ave, by = "Date") %>%
-  full_join(traffic.26th.ave, by = "Date") %>%
-  full_join(traffic.2nd.ave, by = "Date") %>%
+  full_join(traffic.greenway, traffic.fremont.bridge) %>%
+  full_join(traffic.elliot.bay.trail) %>%
+  full_join(traffic.burke.gilman.trail) %>%
+  full_join(traffic.broadway) %>%
+  full_join(traffic.39th.ave) %>%
+  full_join(traffic.26th.ave) %>%
+  full_join(traffic.2nd.ave) %>%
   separate(Date, into = c("Date", "Time", "AMPM"), sep = " ") %>%
   mutate(
     Time = paste(Time, AMPM),
     Weekday = weekdays(as.Date(Date)) #https://stackoverflow.com/a/9216316
   ) %>%
-  select(
-      #"lat", "long",
-    "Date", "Weekday", "Time", locations
-  )
+  select("Date", "Weekday", "Time", "location.name", "lat", "long", "traffic.vol")
 
 avg.traffic.ped.bicycle.by.weekday <- traffic.ped.bicycle %>%
   drop_na() %>%
-  group_by(Weekday) %>%
+  group_by(Weekday, location.name) %>%
   summarize(
-    NW.58th.St.Greenway.st.22nd.Ave.NW.avg = mean(NW.58th.St.Greenway.st.22nd.Ave.NW.Total),
-    Fremont.Bridge.Sidewalk.avg = mean(Fremont.Bridge.Sidewalk),
-    Elliott.Bay.Trail.in.Myrtle.Edwards.Park.avg = mean(Elliott.Bay.Trail.in.Myrtle.Edwards.Park.Total),
-    BGT.North.of.NE.70th.avg = mean(BGT.North.of.NE.70th.Total),
-    Broadway.Cycle.Track.North.Of.E.Union.St.avg = mean(Broadway.Cycle.Track.North.Of.E.Union.St.Total),
-    X39th.Ave.NE.Greenway.at.NE.62nd.St.avg = mean(X39th.Ave.NE.Greenway.at.NE.62nd.St.Total),
-    X26th.Ave.SW.Greenway.at.SW.Oregon.St.avg = mean(X26th.Ave.SW.Greenway.at.SW.Oregon.St.Total),
-    X2nd.Ave.Cycletrack.avg = mean(X2nd.Ave.Cycletrack)
+    avg.traffic.vol = mean(traffic.vol)
   )
