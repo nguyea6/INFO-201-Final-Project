@@ -10,6 +10,7 @@ setwd("C:/Users/david/Desktop/Info 201/INFO-201-Final-Project")
 
 # https://data.seattle.gov/dataset/City-Of-Seattle-Zoning/2hat-teay
 # https://gist.github.com/lmullen/8375785
+
 seattle.shape.data <-
   readOGR("data/City_of_Seattle_Zoning/WGS84/",
           "City_of_Seattle_Zoning") %>%
