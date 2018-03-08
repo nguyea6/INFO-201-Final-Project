@@ -58,41 +58,38 @@ month.traffic.plot <- PlotAvgTrafficByFactor(avg.traffic.ped.bicycle.by.month, "
 quarter.traffic.plot <- PlotAvgTrafficByFactor(avg.traffic.ped.bicycle.by.quarter, "Quarter")
 day.traffic.plot <- PlotAvgTrafficByFactor(avg.traffic.ped.bicycle.by.day, "Date")
 
-PlotAvgTrafficByFactorWithWeather <- function(data, factor) {
-  plot.out <- ggplot(
+PlotAvgTrafficByWeather <- function(data) {
+  weather.traffic.plot <- ggplot(
     data = data,
     aes(
-      x = get("Month")
-    )
-  ) +
-  geom_line(
-    mapping = aes(
+      x = Month,
       y = avg.traffic.vol,
-      group = location.name,
-      linetype = "solid",
-      color = "dark gray",
-      size = 0.5
+      group = weather
+    )
+  ) +
+  #https://janhove.github.io/reporting/2015/11/17/scatterplot-trendline
+  geom_smooth(
+    se = FALSE,
+    size = 1.5,
+    mapping = aes(
+      color = weather
     )
   ) +
   geom_line(
-    aes(
-      y = paste0("avg.", factor),
-      linetype = "dashed",
-      color = "dark blue",
-      size = 0.5
-    )
+    linetype = "solid",
+    color = "dark gray",
+    size = 0.5
   ) +
-
-  scale_y_log10(breaks = pretty_breaks(n = 20)) +
   geom_point(
     mapping = aes(
-      color = location.name
-    )
+      color = weather
+    ),
+    size = 2
   ) +
   labs(
-    title = paste("Average Traffic Volume by", factor),
-    x = Month,
-    y = "Traffic Volume (log10 scale)"
+    title = "Average Monthly Traffic Volume By Weather Condition",
+    x = "Month",
+    y = "Traffic Volume"
   )
-  return(plot.out)
+  return(weather.traffic.plot)
 }

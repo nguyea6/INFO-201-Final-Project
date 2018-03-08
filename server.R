@@ -6,17 +6,17 @@ source("map_plot_processing.R")
 require(shiny)
 require(dplyr)
 
-server <- function(input, output, session) {
+server <- function(input, output) {
 
   #FilterWeatherTraffic <- function(x.var, x.min, x.max, filtered.weather) {
 
   filtered.data <- reactive({
-    if (input$weather.condition == "All") {
-      FilterWeatherTraffic(input$weather.stat, input$min.stat, input$max.stat) %>%
-        return()
+    if(input$weather.condition == "All") {
+      return(weather.traffic.summary)
     } else {
-      FilterWeatherTraffic(input$weather.stat, input$min.stat, input$max.stat, input$weather.condition) %>%
-        return()
+     weather.traffic.summary %>%
+      filter(weather == input$weather.condition) %>%
+      return()
     }
   })
 
@@ -37,13 +37,13 @@ server <- function(input, output, session) {
   })
 
   output$weather.traffic.graph <- renderPlot({
-    PlotAvgTrafficByFactorWithWeather(filtered.data(), input$weather.stat)
+    PlotAvgTrafficByWeather(filtered.data())
   })
 
-  observe({ #https://stackoverflow.com/a/20160256
-    updateTextInput(session, 'min.stat',
-      value = FindStatRange(filtered.data(), input$weather.stat)[1])
-    updateTextInput(session, 'max.stat',
-      value = FindStatRange(filtered.data(), input$weather.stat)[2])
-  })
+#   observe({ #https://stackoverflow.com/a/20160256
+#     updateTextInput(session, 'min.stat',
+#       value = FindStatRange(filtered.data(), input$weather.stat)[1])
+#     updateTextInput(session, 'max.stat',
+#       value = FindStatRange(filtered.data(), input$weather.stat)[2])
+#   })
 }

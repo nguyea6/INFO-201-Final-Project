@@ -152,52 +152,52 @@ traffic.with.weather <- traffic.ped.bicycle %>%
   inner_join(seattle.weather, by = "Date")
 
 weather.traffic.summary <- traffic.with.weather %>%
-  drop_na() %>%
-  group_by(Month, location.name, weather) %>%
+  #drop_na() %>%
+  group_by(Month, weather) %>%
   summarize(
     avg.traffic.vol = mean(traffic.vol),
     lat = first(lat),
-    long = first(long),
-    avg.precipitation = mean(precipitation),
-    avg.temp_max = mean(temp_max),
-    avg.temp_min = mean(temp_min),
-    avg.temp_avg = mean(temp_avg),
-    avg.wind = mean(wind)
+    long = first(long)#,
+    #avg.precipitation = mean(precipitation),
+    #avg.temp_max = mean(temp_max),
+    #avg.temp_min = mean(temp_min),
+    #avg.temp_avg = mean(temp_avg),
+    #avg.wind = mean(wind)
   )
-  weather.traffic.summary$Month <- factor(
-    weather.traffic.summary$Month,
-    levels = month.list
-  )
-
-FilterWeatherTraffic <- function(col.var, col.min, col.max, filtered.weather) {
-  col.name <- paste0("avg.", col.var)
-  data.frame.out <- weather.traffic.summary %>%
-    select("Month", "location.name", "lat", "long", "avg.traffic.vol", col.name, "weather")
-    if(!missing(col.min)) {
-      data.frame.out <- filter(data.frame.out, get(col.name) >= as.numeric(col.min))
-    }
-    if(!missing(col.max)) {
-      data.frame.out <- filter(data.frame.out, get(col.name) <= as.numeric(col.max))
-    }
-    if(!missing(filtered.weather)) {
-      data.frame.out <- filter(data.frame.out, weather == filtered.weather)
-    }
-  return(data.frame.out)
-}
-
-FindStatRange <- function(data.frame.in, col.name) {
-  col.name <- paste0("avg.", col.name)
-  data.frame.in %>%
-    ungroup() %>%
-    select(col.name) %>% #https://stackoverflow.com/a/38512421
-    range(na.rm = TRUE) %>%
-    return()
-}
-
-weather.stat.list <- c("precipitation", "temp_max", "temp_min", "temp_avg", "wind") #another graph with weather elements
-  default.stat <- "precipitation"
+#   weather.traffic.summary$Month <- factor(
+#     weather.traffic.summary$Month,
+#     levels = month.list
+#   )
+#
+# FilterWeatherTraffic <- function(col.var, col.min, col.max, filtered.weather) {
+#   col.name <- paste0("avg.", col.var)
+#   data.frame.out <- weather.traffic.summary %>%
+#     select("Month", "location.name", "lat", "long", "avg.traffic.vol", col.name, "weather")
+#     if(!missing(col.min)) {
+#       data.frame.out <- filter(data.frame.out, get(col.name) >= as.numeric(col.min))
+#     }
+#     if(!missing(col.max)) {
+#       data.frame.out <- filter(data.frame.out, get(col.name) <= as.numeric(col.max))
+#     }
+#     if(!missing(filtered.weather)) {
+#       data.frame.out <- filter(data.frame.out, weather == filtered.weather)
+#     }
+#   return(data.frame.out)
+# }
+#
+# FindStatRange <- function(data.frame.in, col.name) {
+#   col.name <- paste0("avg.", col.name)
+#   data.frame.in %>%
+#     ungroup() %>%
+#     select(col.name) %>% #https://stackoverflow.com/a/38512421
+#     range(na.rm = TRUE) %>%
+#     return()
+# }
+#
+# weather.stat.list <- c("precipitation", "temp_max", "temp_min", "temp_avg", "wind") #another graph with weather elements
+#   default.stat <- "precipitation"
 weather.condition.list <- c(unique(seattle.weather$weather), "All")
   default.weather = "All"
-stat.range <- FindStatRange(weather.traffic.summary, default.stat)
-
-
+# stat.range <- FindStatRange(weather.traffic.summary, default.stat)
+#
+#
