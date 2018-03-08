@@ -4,11 +4,10 @@ require(rgdal)
 require(dplyr)
 require(scales)
 
-source("data_processing.R")
-
 # https://data.seattle.gov/dataset/City-Of-Seattle-Zoning/2hat-teay
 # https://gist.github.com/lmullen/8375785
-seattle.shape.data <- readOGR("data/City_of_Seattle_Zoning/WGS84/", "City_of_Seattle_Zoning") %>%
+seattle.shape.data <-
+  readOGR("data/City_of_Seattle_Zoning/WGS84/", "City_of_Seattle_Zoning") %>%
   fortify()
 
 PlotSeattleTraffic <- function(data) {
@@ -40,7 +39,6 @@ PlotSeattleTraffic <- function(data) {
   return(seattle.street.map)
 }
 
-
 PlotAvgTrafficByFactor <- function(data, factor) {
   plot.out <- ggplot(
     data = data,
@@ -71,10 +69,10 @@ PlotAvgTrafficByFactor <- function(data, factor) {
   return(plot.out)
 }
 
-weekday.traffic.plot <- PlotAvgTrafficByFactor(avg.traffic.ped.bicycle.by.weekday, "Weekday")
-month.traffic.plot <- PlotAvgTrafficByFactor(avg.traffic.ped.bicycle.by.month, "Month")
-quarter.traffic.plot <- PlotAvgTrafficByFactor(avg.traffic.ped.bicycle.by.quarter, "Quarter")
-day.traffic.plot <- PlotAvgTrafficByFactor(avg.traffic.ped.bicycle.by.day, "Date")
+# weekday.traffic.plot <- PlotAvgTrafficByFactor(avg.traffic.ped.bicycle.by.weekday, "Weekday")
+# month.traffic.plot <- PlotAvgTrafficByFactor(avg.traffic.ped.bicycle.by.month, "Month")
+# quarter.traffic.plot <- PlotAvgTrafficByFactor(avg.traffic.ped.bicycle.by.quarter, "Quarter")
+# day.traffic.plot <- PlotAvgTrafficByFactor(avg.traffic.ped.bicycle.by.day, "Date")
 
 PlotAvgTrafficByWeather <- function(data) {
   weather.traffic.plot <- ggplot(
@@ -94,7 +92,7 @@ PlotAvgTrafficByWeather <- function(data) {
     )
   ) +
   geom_line(
-    linetype = "solid",
+    linetype = "dashed",
     color = "dark gray",
     size = 0.5
   ) +

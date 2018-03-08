@@ -76,17 +76,6 @@ traffic.2nd.ave <-
   CleanDataSet("X2nd.Ave.Cycletrack",
     lat = 47.604445, long = -122.3352528)
 
-# locations <- c(
-#   "NW.58th.St.Greenway.st.22nd.Ave.NW.Total",
-#   "Fremont.Bridge.Sidewalk",
-#   "Elliott.Bay.Trail.in.Myrtle.Edwards.Park.Total",
-#   "BGT.North.of.NE.70th.Total",
-#   "Broadway.Cycle.Track.North.Of.E.Union.St.Total",
-#   "X39th.Ave.NE.Greenway.at.NE.62nd.St.Total",
-#   "X26th.Ave.SW.Greenway.at.SW.Oregon.St.Total",
-#   "X2nd.Ave.Cycletrack"
-# )
-
 traffic.ped.bicycle <-
   full_join(traffic.greenway, traffic.fremont.bridge) %>%
   full_join(traffic.elliot.bay.trail) %>%
@@ -108,6 +97,18 @@ weekday.list <- c("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday",
   "Friday", "Saturday")
 month.list <- c("January", "February", "March", "April", "May", "June",
   "July", "August", "September", "October", "November", "December")
+locations.list <- c(
+  "NW.58th.St.Greenway.st.22nd.Ave.NW.Total",
+  "Fremont.Bridge.Sidewalk",
+  "Elliott.Bay.Trail.in.Myrtle.Edwards.Park.Total",
+  "BGT.North.of.NE.70th.Total",
+  "Broadway.Cycle.Track.North.Of.E.Union.St.Total",
+  "X39th.Ave.NE.Greenway.at.NE.62nd.St.Total",
+  "X26th.Ave.SW.Greenway.at.SW.Oregon.St.Total",
+  "X2nd.Ave.Cycletrack",
+  "All"
+)
+  default.location = "All"
 
 GetAvgTrafficVolByCol <- function(data.frame.in, col.name) {
   data.frame.out <- data.frame.in %>%
@@ -152,6 +153,10 @@ seattle.weather <- read.csv("data/weather.csv", stringsAsFactors=FALSE) %>%
 
 traffic.with.weather <- traffic.ped.bicycle %>%
   inner_join(seattle.weather, by = "Date")
+  traffic.with.weather$Month <- factor(
+    traffic.with.weather$Month,
+    levels = month.list
+  )
 
 weather.traffic.summary <- traffic.with.weather %>%
   drop_na() %>%

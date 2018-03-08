@@ -10,6 +10,32 @@ server <- function(input, output) {
 
   #FilterWeatherTraffic <- function(x.var, x.min, x.max, filtered.weather) {
 
+  filtered.weekday.traffic.data <- reactive({
+    avg.traffic.ped.bicycle.by.weekday %>%
+      filter(Weekday == input$day.of.week) %>%
+      return()
+  })
+
+  filtered.location.weekday.traffic.data <- reactive({
+    if(input$location.weekday.select == "All") {
+      return(avg.traffic.ped.bicycle.by.weekday)
+    } else {
+     avg.traffic.ped.bicycle.by.weekday %>%
+      filter(location.name == input$location.weekday.select) %>%
+      return()
+    }
+  })
+
+  filtered.location.month.traffic.data <- reactive({
+    if(input$location.month.select == "All") {
+      return(avg.traffic.ped.bicycle.by.month)
+    } else {
+     avg.traffic.ped.bicycle.by.month %>%
+      filter(location.name == input$location.month.select) %>%
+      return()
+    }
+  })
+
   filtered.weather.traffic.data <- reactive({
     if(input$weather.condition == "All") {
       return(weather.traffic.summary)
@@ -20,22 +46,17 @@ server <- function(input, output) {
     }
   })
 
-  filtered.weekday.traffic.data <- reactive({
-    avg.traffic.ped.bicycle.by.weekday %>%
-      filter(Weekday == input$day.of.week) %>%
-      return()
-  })
-
   output$seattle.map <- renderPlot({
     PlotSeattleTraffic(filtered.weekday.traffic.data())
   })
 
   output$weekday.traffic.graph <- renderPlot({
-    weekday.traffic.plot
+    PlotAvgTrafficByFactor(filtered.location.weekday.traffic.data(), "Weekday")
+
   })
 
   output$month.traffic.graph <- renderPlot({
-    month.traffic.plot
+    PlotAvgTrafficByFactor(filtered.location.month.traffic.data(), "Month")
   })
 
   output$quarter.traffic.graph <- renderPlot({
@@ -47,3 +68,4 @@ server <- function(input, output) {
   })
 
 }
+
