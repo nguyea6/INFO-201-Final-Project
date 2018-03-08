@@ -15,7 +15,7 @@ ui <- fluidPage(
   tabsetPanel(type = "tabs",
     tabPanel("Introduction",
       h3("Summary:"),
-      p("Our team's data report will attempt to present data relating to traffic around Seattle and how that traffic may be affected by various factors such as day of the week, season, and weather."),
+      p("Our team's data report will attempt to present data relating to bicycle and pedestrian traffic around Seattle and how that traffic may be affected by various factors such as day of the week, season, and weather."),
       h3("Motivation:"),
       pre("Motivation goes here"),
       h3("Limitations:"),
@@ -24,16 +24,21 @@ ui <- fluidPage(
 
     tabPanel("Map",
       pre("Heat map goes here"),
-      plotOutput('seattle.map')
+      plotOutput('seattle.map'),
+      sliderInput("animation", "Looping Animation:",
+        min = 1, max = 2000,
+        value = 1, step = 100,
+        animate =
+          animationOptions(interval = 300, loop = TRUE)
+      )
     ),
 
     tabPanel("Graph",
       pre("Graph of traffic vols per street vs date goes here"),
-      plotOutput('weekday.traffic.graph')
-    ),
-
-    tabPanel("Analysis",
-      pre("Analysis goes here")
+      plotOutput('weekday.traffic.graph'),
+      plotOutput('month.traffic.graph'),
+      h3("Analysis:"),
+      p("")
     ),
 
     tabPanel("Citations", #https://shiny.rstudio.com/articles/tag-glossary.html

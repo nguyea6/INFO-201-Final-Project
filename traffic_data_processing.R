@@ -98,9 +98,15 @@ traffic.ped.bicycle <-
   separate(Date, into = c("Date", "Time", "AMPM"), sep = " ") %>%
   mutate(
     Time = paste(Time, AMPM),
-    Weekday = weekdays(as.Date(Date)) #https://stackoverflow.com/a/9216316
+    Weekday = weekdays(as.Date(as.character(Date), format = "%m/%d/%Y")), #https://stackoverflow.com/a/9216316
+    Month = months(as.Date(as.character(Date), format = "%m/%d/%Y"))
   ) %>%
-  select("Date", "Weekday", "Time", "location.name", "lat", "long", "traffic.vol")
+  select("Date", "Weekday", "Month", "Time", "location.name", "lat", "long", "traffic.vol")
+
+  weekday.list <- c("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday",
+    "Friday", "Saturday")
+  month.list <- c("January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December")
 
 avg.traffic.ped.bicycle.by.weekday <- traffic.ped.bicycle %>%
   drop_na() %>%
@@ -111,15 +117,33 @@ avg.traffic.ped.bicycle.by.weekday <- traffic.ped.bicycle %>%
     long = first(long)
   ) %>%
   select("Weekday", "location.name", "lat", "long", "avg.traffic.vol")# %>%
-#   arrange( #https://stackoverflow.com/a/46129338
-#     factor(Weekday, levels = c("Sunday", "Monday", "Tuesday", "Wednesday",
-#       "Thursday", "Friday", "Saturday")
-#     )
-#   )
-
   #https://sebastiansauer.github.io/ordering-bars/
   avg.traffic.ped.bicycle.by.weekday$Weekday <- factor(
     avg.traffic.ped.bicycle.by.weekday$Weekday,
-    levels = c("Sunday", "Monday", "Tuesday", "Wednesday",
-      "Thursday", "Friday", "Saturday")
+    levels = weekday.list
   )
+
+  avg.traffic.ped.bicycle.by.month <- traffic.ped.bicycle %>%
+  drop_na() %>%
+  group_by(Month, location.name) %>%
+  summarize(
+    avg.traffic.vol = mean(traffic.vol),
+    lat = first(lat),
+    long = first(long)
+  ) %>%
+  select("Month", "location.name", "lat", "long", "avg.traffic.vol")
+  avg.traffic.ped.bicycle.by.month$Month <- factor(
+    avg.traffic.ped.bicycle.by.month$Month,
+    levels = month.list
+  )
+
+  seattle.weather <- read.csv("data/weather.csv", stringsAsFactors=FALSE) %>%
+    filter(location == "Seattle") %>%
+    separate(date, into = c("Date", "Time"), sep = " ") %>%
+    mutate(
+      Date = format(as.Date(as.character(Date)), "%m/%d/%Y")
+    ) %>%
+    select("Date", "precipitation", "temp_max", "temp_min", "wind", "weather")
+
+traffic.with.weather <- traffic.ped.bicycle %>%
+  inner_join(seattle.weather, by = "Date")
