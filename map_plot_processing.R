@@ -30,12 +30,21 @@ weekday.traffic.plot <- ggplot(
     group = location.name
   )
 ) +
+  #http://ggplot2.tidyverse.org/reference/scale_continuous.html
+  #https://stackoverflow.com/a/15734133
+  scale_y_log10(breaks = pretty_breaks(n = 20)) +
   geom_line(
     linetype = "solid",
     color = "dark gray",
     size = 0.5
   ) +
-  geom_point(mapping = aes(
-    color = location.name
-  )) +
-  scale_y_log10() #http://ggplot2.tidyverse.org/reference/scale_continuous.html
+  geom_point(
+    mapping = aes(
+      color = location.name
+    )
+  ) +
+  labs(
+    title = "Average Traffic Volume by Weekday",
+    x = "Day of the Week",
+    y = "Traffic Volume (log10 scale)"
+  )
