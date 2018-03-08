@@ -70,7 +70,7 @@ PlotAvgTrafficByWeather <- function(data) {
   #https://janhove.github.io/reporting/2015/11/17/scatterplot-trendline
   geom_smooth(
     se = FALSE,
-    size = 1.5,
+    size = 1,
     mapping = aes(
       color = weather
     )
@@ -84,7 +84,6 @@ PlotAvgTrafficByWeather <- function(data) {
     mapping = aes(
       color = weather
     ),
-    size = 2
   ) +
   labs(
     title = "Average Monthly Traffic Volume By Weather Condition",
