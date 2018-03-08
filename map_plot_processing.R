@@ -83,15 +83,6 @@ PlotAvgTrafficByFactor <- function(data, factor) {
   return(plot.out)
 }
 
-# weekday.traffic.plot <-
-#   PlotAvgTrafficByFactor(avg.traffic.ped.bicycle.by.weekday, "Weekday")
-# month.traffic.plot <-
-#   PlotAvgTrafficByFactor(avg.traffic.ped.bicycle.by.month, "Month")
-# quarter.traffic.plot <-
-#   PlotAvgTrafficByFactor(avg.traffic.ped.bicycle.by.quarter, "Quarter")
-# day.traffic.plot <-
-#   PlotAvgTrafficByFactor(avg.traffic.ped.bicycle.by.day, "Date")
-
 PlotAvgTrafficByWeather <- function(data) {
   # Returns a plot with traffic volume plotted against weather conditions.
   #

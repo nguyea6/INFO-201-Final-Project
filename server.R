@@ -8,8 +8,6 @@ require(dplyr)
 
 server <- function(input, output) {
 
-  #FilterWeatherTraffic <- function(x.var, x.min, x.max, filtered.weather) {
-
   filtered.weekday.traffic.data <- reactive({
     avg.traffic.ped.bicycle.by.weekday %>%
       filter(Weekday == input$day.of.week) %>%

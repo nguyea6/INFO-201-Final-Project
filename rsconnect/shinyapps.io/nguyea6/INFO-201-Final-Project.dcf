@@ -5,8 +5,8 @@ account: nguyea6
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 295752
-bundleId: 1259213
+bundleId: 1259250
 url: https://nguyea6.shinyapps.io/INFO-201-Final-Project/
-when: 1520518581.66137
+when: 1520520075.18657
 asMultiple: FALSE
 asStatic: FALSE
