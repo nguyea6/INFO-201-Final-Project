@@ -110,7 +110,7 @@ avg.traffic.ped.bicycle.by.weekday <- traffic.ped.bicycle %>%
     lat = first(lat),
     long = first(long)
   ) %>%
-  select("Weekday", "location.name", "lat", "long", "avg.traffic.vol")# %>%
+  select("Weekday", "location.name", "lat", "long", "avg.traffic.vol") # %>%
 #   arrange( #https://stackoverflow.com/a/46129338
 #     factor(Weekday, levels = c("Sunday", "Monday", "Tuesday", "Wednesday",
 #       "Thursday", "Friday", "Saturday")
