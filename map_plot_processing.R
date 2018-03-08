@@ -23,14 +23,17 @@ seattle.street.map <- ggplot() +
   ) +
   coord_map()
 
-weekday.traffic.plot <- ggplot(
-  data = avg.traffic.ped.bicycle.by.weekday,
-  aes(
-    x = Weekday,
-    y = avg.traffic.vol,
-    group = location.name
-  )
-) +
+
+
+PlotAvgTrafficByFactor <- function(data, factor) {
+  plot.out <- ggplot(
+    data = data,
+    aes(
+      x = get(factor),
+      y = avg.traffic.vol,
+      group = location.name
+    )
+  ) +
   #http://ggplot2.tidyverse.org/reference/scale_continuous.html
   #https://stackoverflow.com/a/15734133
   scale_y_log10(breaks = pretty_breaks(n = 20)) +
@@ -45,7 +48,65 @@ weekday.traffic.plot <- ggplot(
     )
   ) +
   labs(
-    title = "Average Traffic Volume by Weekday",
-    x = "Day of the Week",
+    title = paste("Average Traffic Volume by", factor),
+    x = factor,
     y = "Traffic Volume (log10 scale)"
   )
+  return(plot.out)
+}
+
+weekday.traffic.plot <- PlotAvgTrafficByFactor(avg.traffic.ped.bicycle.by.weekday, "Weekday")
+
+# weekday.traffic.plot <- ggplot(
+#   data = avg.traffic.ped.bicycle.by.weekday,
+#   aes(
+#     x = Weekday,
+#     y = avg.traffic.vol,
+#     group = location.name
+#   )
+# ) +
+#   #http://ggplot2.tidyverse.org/reference/scale_continuous.html
+#   #https://stackoverflow.com/a/15734133
+#   scale_y_log10(breaks = pretty_breaks(n = 20)) +
+#   geom_line(
+#     linetype = "solid",
+#     color = "dark gray",
+#     size = 0.5
+#   ) +
+#   geom_point(
+#     mapping = aes(
+#       color = location.name
+#     )
+#   ) +
+#   labs(
+#     title = "Average Traffic Volume by Weekday",
+#     x = "Day of the Week",
+#     y = "Traffic Volume (log10 scale)"
+#   )
+
+month.traffic.plot <- PlotAvgTrafficByFactor(avg.traffic.ped.bicycle.by.month, "Month")
+#
+# month.traffic.plot <- ggplot(
+#   data = avg.traffic.ped.bicycle.by.month,
+#   aes(
+#     x = Month,
+#     y = avg.traffic.vol,
+#     group = location.name
+#   )
+# ) +
+#   scale_y_log10(breaks = pretty_breaks(n = 20)) +
+#   geom_line(
+#     linetype = "solid",
+#     color = "dark gray",
+#     size = 0.5
+#   ) +
+#   geom_point(
+#     mapping = aes(
+#       color = location.name
+#     )
+#   ) +
+#   labs(
+#     title = "Average Traffic Volume by Month",
+#     x = "Month",
+#     y = "Traffic Volume (log10 scale)"
+#   )
