@@ -12,10 +12,10 @@ server <- function(input, output, session) {
 
   filtered.data <- reactive({
     if (input$weather.condition == "All") {
-      FilterWeatherTraffic(input$weather.stat) %>%
+      FilterWeatherTraffic(input$weather.stat, input$min.stat, input$max.stat) %>%
         return()
     } else {
-      FilterWeatherTraffic(input$weather.stat, filtered.weather = input$weather.condition) %>%
+      FilterWeatherTraffic(input$weather.stat, input$min.stat, input$max.stat, input$weather.condition) %>%
         return()
     }
   })
@@ -36,9 +36,9 @@ server <- function(input, output, session) {
     quarter.traffic.plot
   })
 
-#   output$weather.traffic.graph <- renderPlot({
-#     weather.traffic.plot
-#   })
+  output$weather.traffic.graph <- renderPlot({
+    PlotAvgTrafficByFactorWithWeather(filtered.data(), input$weather.stat)
+  })
 
   observe({ #https://stackoverflow.com/a/20160256
     updateTextInput(session, 'min.stat',

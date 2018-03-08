@@ -52,7 +52,7 @@ ui <- fluidPage(
           selectInput("weather.condition", label = "Weather Condition", choices = weather.condition.list, selected = default.weather)
         ),
         mainPanel(
-          #plotOutput('weather.traffic.graph')
+          plotOutput('weather.traffic.graph')
         )
       )
     ),

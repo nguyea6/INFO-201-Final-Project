@@ -57,3 +57,42 @@ weekday.traffic.plot <- PlotAvgTrafficByFactor(avg.traffic.ped.bicycle.by.weekda
 month.traffic.plot <- PlotAvgTrafficByFactor(avg.traffic.ped.bicycle.by.month, "Month")
 quarter.traffic.plot <- PlotAvgTrafficByFactor(avg.traffic.ped.bicycle.by.quarter, "Quarter")
 day.traffic.plot <- PlotAvgTrafficByFactor(avg.traffic.ped.bicycle.by.day, "Date")
+
+PlotAvgTrafficByFactorWithWeather <- function(data, factor) {
+  plot.out <- ggplot(
+    data = data,
+    aes(
+      x = get("Month")
+    )
+  ) +
+  geom_line(
+    mapping = aes(
+      y = avg.traffic.vol,
+      group = location.name,
+      linetype = "solid",
+      color = "dark gray",
+      size = 0.5
+    )
+  ) +
+  geom_line(
+    aes(
+      y = paste0("avg.", factor),
+      linetype = "dashed",
+      color = "dark blue",
+      size = 0.5
+    )
+  ) +
+
+  scale_y_log10(breaks = pretty_breaks(n = 20)) +
+  geom_point(
+    mapping = aes(
+      color = location.name
+    )
+  ) +
+  labs(
+    title = paste("Average Traffic Volume by", factor),
+    x = Month,
+    y = "Traffic Volume (log10 scale)"
+  )
+  return(plot.out)
+}
