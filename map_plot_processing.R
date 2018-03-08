@@ -35,7 +35,7 @@ weekday.traffic.plot <- ggplot(
     color = "dark gray",
     size = 0.5
   ) +
-  geom_point(
-    color = "navy",
-    size = 2
-  )
+  geom_point(mapping = aes(
+    color = location.name
+  )) +
+  scale_y_log10() #http://ggplot2.tidyverse.org/reference/scale_continuous.html
