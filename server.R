@@ -1,12 +1,24 @@
 # server.R: Calculates and returns output based on input
 
-source("traffic_data_processing.R")
+source("data_processing.R")
 source("map_plot_processing.R")
 
 require(shiny)
 require(dplyr)
 
-server <- function(input, output) {
+server <- function(input, output, session) {
+
+  #FilterWeatherTraffic <- function(x.var, x.min, x.max, filtered.weather) {
+
+  filtered.data <- reactive({
+    if (input$weather.condition == "All") {
+      FilterWeatherTraffic(input$weather.stat) %>%
+        return()
+    } else {
+      FilterWeatherTraffic(input$weather.stat, filtered.weather = input$weather.condition) %>%
+        return()
+    }
+  })
 
   output$seattle.map <- renderPlot({
     seattle.street.map
@@ -20,4 +32,18 @@ server <- function(input, output) {
     month.traffic.plot
   })
 
+  output$quarter.traffic.graph <- renderPlot({
+    quarter.traffic.plot
+  })
+
+#   output$weather.traffic.graph <- renderPlot({
+#     weather.traffic.plot
+#   })
+
+  observe({ #https://stackoverflow.com/a/20160256
+    updateTextInput(session, 'min.stat',
+      value = FindStatRange(filtered.data(), input$weather.stat)[1])
+    updateTextInput(session, 'max.stat',
+      value = FindStatRange(filtered.data(), input$weather.stat)[2])
+  })
 }

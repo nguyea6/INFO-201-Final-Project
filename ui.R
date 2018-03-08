@@ -1,6 +1,6 @@
 # ui.R: Defines user interface
 
-source("traffic_data_processing.R")
+source("data_processing.R")
 
 require(shiny)
 
@@ -33,12 +33,28 @@ ui <- fluidPage(
       )
     ),
 
-    tabPanel("Graph",
+    tabPanel("Traffic Over Time Graph",
       pre("Graph of traffic vols per street vs date goes here"),
-      plotOutput('weekday.traffic.graph'),
+      plotOutput('weekday.traffic.graph', width = "100%"),
       plotOutput('month.traffic.graph'),
+      #plotOutput('quarter.traffic.graph'),
       h3("Analysis:"),
       p("")
+    ),
+
+    tabPanel("Traffic Compared to Weather Graph",
+      pre("traffic vs weather graph with filters goes here"),
+      sidebarLayout(
+        sidebarPanel(
+          selectInput("weather.stat", label = "Weather Statistic", choices = weather.stat.list, selected = default.stat),
+          textInput("min.stat", label = "Minimum", value = stat.range[1]),
+          textInput("max.stat", label = "Maximum", value = stat.range[2]),
+          selectInput("weather.condition", label = "Weather Condition", choices = weather.condition.list, selected = default.weather)
+        ),
+        mainPanel(
+          #plotOutput('weather.traffic.graph')
+        )
+      )
     ),
 
     tabPanel("Citations", #https://shiny.rstudio.com/articles/tag-glossary.html

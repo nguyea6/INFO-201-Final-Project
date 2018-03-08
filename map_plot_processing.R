@@ -4,7 +4,7 @@ require(rgdal)
 require(dplyr)
 require(scales)
 
-source("traffic_data_processing.R")
+source("data_processing.R")
 
 # https://data.seattle.gov/dataset/City-Of-Seattle-Zoning/2hat-teay
 # https://gist.github.com/lmullen/8375785
@@ -22,8 +22,6 @@ seattle.street.map <- ggplot() +
     color = "dark gray"
   ) +
   coord_map()
-
-
 
 PlotAvgTrafficByFactor <- function(data, factor) {
   plot.out <- ggplot(
@@ -56,5 +54,6 @@ PlotAvgTrafficByFactor <- function(data, factor) {
 }
 
 weekday.traffic.plot <- PlotAvgTrafficByFactor(avg.traffic.ped.bicycle.by.weekday, "Weekday")
-
 month.traffic.plot <- PlotAvgTrafficByFactor(avg.traffic.ped.bicycle.by.month, "Month")
+quarter.traffic.plot <- PlotAvgTrafficByFactor(avg.traffic.ped.bicycle.by.quarter, "Quarter")
+day.traffic.plot <- PlotAvgTrafficByFactor(avg.traffic.ped.bicycle.by.day, "Date")
