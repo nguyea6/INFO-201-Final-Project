@@ -99,51 +99,66 @@ traffic.ped.bicycle <-
   mutate(
     Time = paste(Time, AMPM),
     Weekday = weekdays(as.Date(as.character(Date), format = "%m/%d/%Y")), #https://stackoverflow.com/a/9216316
-    Month = months(as.Date(as.character(Date), format = "%m/%d/%Y"))
+    Month = months(as.Date(as.character(Date), format = "%m/%d/%Y")),
+    Quarter = quarters(as.Date(as.character(Date), format = "%m/%d/%Y"))
   ) %>%
-  select("Date", "Weekday", "Month", "Time", "location.name", "lat", "long", "traffic.vol")
+  select("Date", "Weekday", "Month", "Quarter", "Time", "location.name", "lat", "long", "traffic.vol")
 
-  weekday.list <- c("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday",
-    "Friday", "Saturday")
-  month.list <- c("January", "February", "March", "April", "May", "June",
-    "July", "August", "September", "October", "November", "December")
+weekday.list <- c("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday",
+  "Friday", "Saturday")
+month.list <- c("January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December")
 
-avg.traffic.ped.bicycle.by.weekday <- traffic.ped.bicycle %>%
-  drop_na() %>%
-  group_by(Weekday, location.name) %>%
-  summarize(
-    avg.traffic.vol = mean(traffic.vol),
-    lat = first(lat),
-    long = first(long)
+GetAvgTrafficVolByCol <- function(data.frame.in, col.name) {
+  data.frame.out <- data.frame.in %>%
+    drop_na() %>%
+    group_by(!!rlang::sym(col.name), location.name) %>%
+    summarize(
+      lat = first(lat),
+      long = first(long),
+      avg.traffic.vol = mean(traffic.vol)
+    )
+    if(col.name == "Weekday") {
+      #https://sebastiansauer.github.io/ordering-bars/
+      data.frame.out$Weekday <- factor(
+        data.frame.out$Weekday,
+        levels = weekday.list
+      )
+    } else if (col.name == "Month") {
+      data.frame.out$Month <- factor(
+        data.frame.out$Month,
+        levels = month.list
+      )
+    }
+  return(data.frame.out)
+}
+
+avg.traffic.ped.bicycle.by.weekday <- GetAvgTrafficVolByCol(traffic.ped.bicycle, "Weekday")
+avg.traffic.ped.bicycle.by.month <- GetAvgTrafficVolByCol(traffic.ped.bicycle, "Month")
+avg.traffic.ped.bicycle.by.quarter <- GetAvgTrafficVolByCol(traffic.ped.bicycle, "Quarter")
+avg.traffic.ped.bicycle.by.day <- GetAvgTrafficVolByCol(traffic.ped.bicycle, "Date")
+
+#https://github.com/vega/vega-datasets/blob/gh-pages/data/weather.csv
+seattle.weather <- read.csv("data/weather.csv", stringsAsFactors=FALSE) %>%
+  filter(location == "Seattle") %>%
+  separate(date, into = c("Date", "Time"), sep = " ") %>%
+  mutate(
+    Date = format(as.Date(as.character(Date)), "%m/%d/%Y"),
+    temp_avg = (temp_max - temp_min) / 2
   ) %>%
-  select("Weekday", "location.name", "lat", "long", "avg.traffic.vol")# %>%
-  #https://sebastiansauer.github.io/ordering-bars/
-  avg.traffic.ped.bicycle.by.weekday$Weekday <- factor(
-    avg.traffic.ped.bicycle.by.weekday$Weekday,
-    levels = weekday.list
-  )
-
-  avg.traffic.ped.bicycle.by.month <- traffic.ped.bicycle %>%
-  drop_na() %>%
-  group_by(Month, location.name) %>%
-  summarize(
-    avg.traffic.vol = mean(traffic.vol),
-    lat = first(lat),
-    long = first(long)
-  ) %>%
-  select("Month", "location.name", "lat", "long", "avg.traffic.vol")
-  avg.traffic.ped.bicycle.by.month$Month <- factor(
-    avg.traffic.ped.bicycle.by.month$Month,
-    levels = month.list
-  )
-
-  seattle.weather <- read.csv("data/weather.csv", stringsAsFactors=FALSE) %>%
-    filter(location == "Seattle") %>%
-    separate(date, into = c("Date", "Time"), sep = " ") %>%
-    mutate(
-      Date = format(as.Date(as.character(Date)), "%m/%d/%Y")
-    ) %>%
-    select("Date", "precipitation", "temp_max", "temp_min", "wind", "weather")
+  select("Date", "precipitation", "temp_max", "temp_min", "temp_avg", "wind", "weather")
 
 traffic.with.weather <- traffic.ped.bicycle %>%
   inner_join(seattle.weather, by = "Date")
+
+weather.traffic.summary <- traffic.with.weather %>%
+  drop_na() %>%
+  group_by(Month, weather) %>%
+  summarize(
+    avg.traffic.vol = mean(traffic.vol),
+    lat = first(lat),
+    long = first(long)
+  )
+
+weather.condition.list <- c(unique(seattle.weather$weather), "All")
+  default.weather = "All"

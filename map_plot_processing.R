@@ -4,7 +4,7 @@ require(rgdal)
 require(dplyr)
 require(scales)
 
-source("traffic_data_processing.R")
+source("data_processing.R")
 
 # https://data.seattle.gov/dataset/City-Of-Seattle-Zoning/2hat-teay
 # https://gist.github.com/lmullen/8375785
@@ -22,8 +22,6 @@ seattle.street.map <- ggplot() +
     color = "dark gray"
   ) +
   coord_map()
-
-
 
 PlotAvgTrafficByFactor <- function(data, factor) {
   plot.out <- ggplot(
@@ -56,5 +54,42 @@ PlotAvgTrafficByFactor <- function(data, factor) {
 }
 
 weekday.traffic.plot <- PlotAvgTrafficByFactor(avg.traffic.ped.bicycle.by.weekday, "Weekday")
-
 month.traffic.plot <- PlotAvgTrafficByFactor(avg.traffic.ped.bicycle.by.month, "Month")
+quarter.traffic.plot <- PlotAvgTrafficByFactor(avg.traffic.ped.bicycle.by.quarter, "Quarter")
+day.traffic.plot <- PlotAvgTrafficByFactor(avg.traffic.ped.bicycle.by.day, "Date")
+
+PlotAvgTrafficByWeather <- function(data) {
+  weather.traffic.plot <- ggplot(
+    data = data,
+    aes(
+      x = Month,
+      y = avg.traffic.vol,
+      group = weather
+    )
+  ) +
+  #https://janhove.github.io/reporting/2015/11/17/scatterplot-trendline
+  geom_smooth(
+    se = FALSE,
+    size = 1.5,
+    mapping = aes(
+      color = weather
+    )
+  ) +
+  geom_line(
+    linetype = "solid",
+    color = "dark gray",
+    size = 0.5
+  ) +
+  geom_point(
+    mapping = aes(
+      color = weather
+    ),
+    size = 2
+  ) +
+  labs(
+    title = "Average Monthly Traffic Volume By Weather Condition",
+    x = "Month",
+    y = "Traffic Volume"
+  )
+  return(weather.traffic.plot)
+}
