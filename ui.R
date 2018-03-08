@@ -45,23 +45,15 @@ ui <- fluidPage(
     tabPanel("Traffic Compared to Weather Graph",
       pre("traffic vs weather graph with filters goes here"),
       sidebarLayout(
+
         sidebarPanel(
           selectInput("weather.condition", label = "Weather Condition", choices = weather.condition.list, selected = default.weather)
         ),
 
-      mainPanel(
-        plotOutput('weather.traffic.graph')
-      )
-#       sidebarLayout(
-#         sidebarPanel(
-#           selectInput("weather.stat", label = "Weather Statistic", choices = weather.stat.list, selected = default.stat),
-#           textInput("min.stat", label = "Minimum", value = stat.range[1]),
-#           textInput("max.stat", label = "Maximum", value = stat.range[2]),
-#
-#         mainPanel(
-#           plotOutput('weather.traffic.graph')
-#         )
-#       )
+        mainPanel(
+          plotOutput('weather.traffic.graph')
+        )
+
       )
     ),
 

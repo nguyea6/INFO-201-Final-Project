@@ -40,10 +40,4 @@ server <- function(input, output) {
     PlotAvgTrafficByWeather(filtered.data())
   })
 
-#   observe({ #https://stackoverflow.com/a/20160256
-#     updateTextInput(session, 'min.stat',
-#       value = FindStatRange(filtered.data(), input$weather.stat)[1])
-#     updateTextInput(session, 'max.stat',
-#       value = FindStatRange(filtered.data(), input$weather.stat)[2])
-#   })
 }
