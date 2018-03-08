@@ -11,6 +11,12 @@ seattle.shape.data <-
   fortify()
 
 PlotSeattleTraffic <- function(data) {
+  # Returns a plot of the City of Seattle with streets outlined and data points
+  # from the given data plotted as points.
+  #
+  # Args:
+  #   data: A data frame. Should include long, lat, location.name and
+  #   avg.traffic.vol.
   seattle.street.map <- ggplot() +
     geom_path(
       data = seattle.shape.data,
@@ -40,6 +46,14 @@ PlotSeattleTraffic <- function(data) {
 }
 
 PlotAvgTrafficByFactor <- function(data, factor) {
+  # Returns a plot of average traffic volume on a log10 scale versus a given
+  # factor.
+  #
+  # Args:
+  #   data: A data frame. Should include location.name, avg.traffic.vol, and
+  #     a column that corresponds to the given factor.
+  #   factor: A factor for which the plot is to be plotted against, such as
+  #     month or weekday. Should correspond to a column in the data frame.
   plot.out <- ggplot(
     data = data,
     aes(
@@ -69,12 +83,21 @@ PlotAvgTrafficByFactor <- function(data, factor) {
   return(plot.out)
 }
 
-# weekday.traffic.plot <- PlotAvgTrafficByFactor(avg.traffic.ped.bicycle.by.weekday, "Weekday")
-# month.traffic.plot <- PlotAvgTrafficByFactor(avg.traffic.ped.bicycle.by.month, "Month")
-# quarter.traffic.plot <- PlotAvgTrafficByFactor(avg.traffic.ped.bicycle.by.quarter, "Quarter")
-# day.traffic.plot <- PlotAvgTrafficByFactor(avg.traffic.ped.bicycle.by.day, "Date")
+# weekday.traffic.plot <-
+#   PlotAvgTrafficByFactor(avg.traffic.ped.bicycle.by.weekday, "Weekday")
+# month.traffic.plot <-
+#   PlotAvgTrafficByFactor(avg.traffic.ped.bicycle.by.month, "Month")
+# quarter.traffic.plot <-
+#   PlotAvgTrafficByFactor(avg.traffic.ped.bicycle.by.quarter, "Quarter")
+# day.traffic.plot <-
+#   PlotAvgTrafficByFactor(avg.traffic.ped.bicycle.by.day, "Date")
 
 PlotAvgTrafficByWeather <- function(data) {
+  # Returns a plot with traffic volume plotted against weather conditions.
+  #
+  # Args:
+  #   data: A data frame. Should include Month, avg.traffic.vol, and a weather
+  #     grouping column.
   weather.traffic.plot <- ggplot(
     data = data,
     aes(

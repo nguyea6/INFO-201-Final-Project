@@ -16,7 +16,8 @@ ui <- fluidPage(
       h3("Motivation:"),
         p("Before starting this project, we were fully aware of the difficulties in transportation due to traffic/road congestion in major cities like Seattle, so we wanted to analyze how alternative forms of transportation, including biking and walking, are affected by various factors. These factors include the day of the week, weather conditions, and road conditions. By analyzing traffic numbers against these factors, we can correlate variations in these factors with bike and pedestrian traffic volumes. We can then use these trends to predict future trends in these alternative forms of transportation in order to potentially introduce new infrastructure to better accommodate these forms of transportation."),
       h3("Limitations:"),
-        p("Unfortunately, our team was not able to find data about vehicle traffic that was detailed enough for our use case. Using vehicle traffic would have been ideal, as we could use this data to view the correlations between fluctuations in bike/pedestrian traffic with vehicle traffic. There is also a limited number of bike/pedestrian data collection stations available. However, the number of locations with data collected are adequate for a reasonable analysis, as we found that they are placed in key locations. Ideally, the analysis should take into account major innovations in alternative transportation such as the introduction of bike sharing programs (Ofo, Spin, LimeBike), and the opening of new Light Rail stations, as these would be expected to dramatically affect traffc volumes throughout the city, but unfortunately no data could be found for those features.")
+        p("Unfortunately, our team was not able to find data about vehicle traffic that was detailed enough for our use case. Using vehicle traffic would have been ideal, as we could use this data to view the correlations between fluctuations in bike/pedestrian traffic with vehicle traffic. There is also a limited number of bike/pedestrian data collection stations available. However, the number of locations with data collected are adequate for a reasonable analysis, as we found that they are placed in key locations. Ideally, the analysis should take into account major innovations in alternative transportation such as the introduction of bike sharing programs (Ofo, Spin, LimeBike), and the opening of new Light Rail stations, as these would be expected to dramatically affect traffc volumes throughout the city, but unfortunately no data could be found for those features."),
+      h3(tags$a(href="https://github.com/nguyea6/INFO-201-Final-Project", "GitHub"))
     ),
 
     tabPanel("Traffic vs. Weekday Point Map",
@@ -25,7 +26,8 @@ ui <- fluidPage(
       sidebarLayout(
 
         sidebarPanel(
-          selectInput("day.of.week", label = "Weekday:", choices = weekday.list)
+          selectInput("day.of.week", label = "Weekday:",
+            choices = weekday.list)
         ),
 
         mainPanel(
@@ -40,7 +42,8 @@ ui <- fluidPage(
     tabPanel("Traffic vs. Date Graph",
       h3("Description:"),
         p("The graphs below show average traffic volumes at chosen data collection locations by weekday and month. Since some traffic locations received significantly more traffic than other locations, a logarithmic scale was used so that data points with less traffic could be seen more clearly. Data for a specific location can be selected with the dropdown menus provided below."),
-    selectInput("location.weekday.select", label = "Location:", choices = locations.list, selected = default.location),
+    selectInput("location.weekday.select", label = "Location:",
+      choices = locations.list, selected = default.location),
     tabPanel("Graph",
       plotOutput('weekday.traffic.graph'),
       h3("Analysis:"),
@@ -52,7 +55,8 @@ ui <- fluidPage(
           p('The Elliot Bay Trail has the highest traffic volume because it goes along the waterfront in Downtown Seattle. This area contains many small businesses and tourist attractions, which brings in any type of traffic all day and all year long. The graph consistently holds the highest traffic volume from Sunday through Saturday. This can be good and bad. High traffic can help businesses by bringing in customers, but it can potentially slow down customers and workers to are trying get to their specific destinations'),
         h4('38th Ave NE Greenway, 26th Ave SW Greenway, and NW 58th ST Greenway'),
           p('38th Ave NE Greenway, 26th Ave SW Greenway, and NW 58th ST Greenway all have relatively low traffic numbers compared to The Fremont Bridge and The Elliott Bay Trail because these 3 areas are residential areas. People who travel on these streets are mostly people leaving for work or children leaving for school.'),
-      selectInput("location.month.select", label = "Location:", choices = locations.list, selected = default.location),
+      selectInput("location.month.select", label = "Location:",
+        choices = locations.list, selected = default.location),
       plotOutput('month.traffic.graph'),
       h3("Analysis:"),
         p('Similar to the volumes for weekday vs weekends, designated pedestrian and bike trails (Burke-Gilman Trail, Elliott Bay Trail, and Fremont Bridge) have a significantly higher traffic volume throughout the year compared to other locations. The main variable considered by the different months is weather and temperature conditions. As seen in all locations on the graph, there is a very strong correlation between months with warmer temperatures/lowered precipitation and traffic volume. On average, the difference between months with lowest traffic volumes were about 50% of months with highest traffic volumes, and this is generally true for all data collection locations.'),
@@ -67,7 +71,8 @@ ui <- fluidPage(
       sidebarLayout(
 
         sidebarPanel(
-          selectInput("weather.condition", label = "Weather Condition", choices = weather.condition.list, selected = default.weather)
+          selectInput("weather.condition", label = "Weather Condition",
+            choices = weather.condition.list, selected = default.weather)
         ),
 
         mainPanel(
@@ -79,9 +84,11 @@ ui <- fluidPage(
         p("One would think that more people would prefer getting around in their cars when there's rain, and would ride their bikes and walk when it's sunny. This is indeed the case in the Summer months, but the traffic volume during drizzly weather during the rest of the year surpasses the traffic volume during other conditions by a significant margin. This could be attributed to Seattle's famous wet weather. It appears as though the people of Seattle are so accustomed to rain that they're willing to walk and bike in it.")
     ),
     tabPanel("Conclusion",
+      h3("Conclusion:"),
       p("Judging from the Map and Traffic vs. Date visualizations, the areas that could use the most improvement in terms of traffic management are The Fremont Bridge and The Elliot Bay Trail. Both these locations are near key destinations (Google\'s Seattle headquarters and Downtown Seatte respectively), and both these locations see a large volume of traffic on an almost daily basis. Improving these areas might encourage more people to walk or bike to get where they need to go, reducing emmissions and reducing vehicle traffic.")
     ),
     tabPanel("Citations", #https://shiny.rstudio.com/articles/tag-glossary.html
+      h3("Citations:"),
       tags$ol(
         tags$li(tags$a(href="https://data.seattle.gov/Transportation/26th-Ave-SW-Greenway-at-SW-Oregon-St/mefu-7eau", "26th Ave SW Greenway at SW Oregon St")),
         tags$li(tags$a(href="https://data.seattle.gov/Transportation/2nd-Ave-Cycle-Track-North-of-Marion-St/avwm-i8ym", "2nd Ave Cycle Track North of Marion St")),

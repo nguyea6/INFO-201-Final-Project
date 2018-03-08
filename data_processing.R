@@ -87,11 +87,13 @@ traffic.ped.bicycle <-
   separate(Date, into = c("Date", "Time", "AMPM"), sep = " ") %>%
   mutate(
     Time = paste(Time, AMPM),
-    Weekday = weekdays(as.Date(as.character(Date), format = "%m/%d/%Y")), #https://stackoverflow.com/a/9216316
+    #https://stackoverflow.com/a/9216316
+    Weekday = weekdays(as.Date(as.character(Date), format = "%m/%d/%Y")),
     Month = months(as.Date(as.character(Date), format = "%m/%d/%Y")),
     Quarter = quarters(as.Date(as.character(Date), format = "%m/%d/%Y"))
   ) %>%
-  select("Date", "Weekday", "Month", "Quarter", "Time", "location.name", "lat", "long", "traffic.vol")
+  select("Date", "Weekday", "Month", "Quarter", "Time", "location.name", "lat",
+    "long", "traffic.vol")
 
 weekday.list <- c("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday",
   "Friday", "Saturday")
@@ -111,6 +113,17 @@ locations.list <- c(
   default.location = "All"
 
 GetAvgTrafficVolByCol <- function(data.frame.in, col.name) {
+  # Returns a data frame that summarizes the average traffic volume in groups
+  # defined by a given column name.
+  #
+  # Args:
+  #   data.frame.in: A data frame
+  #   col.name: The name of a column in the data frame for which the data is to
+  #     be grouped by.
+  #
+  # Returns:
+  #   A data frame with average traffic volumes per the given column name, such
+  #   as average traffic per month or per weekday.
   data.frame.out <- data.frame.in %>%
     drop_na() %>%
     group_by(!!rlang::sym(col.name), location.name) %>%
@@ -134,12 +147,17 @@ GetAvgTrafficVolByCol <- function(data.frame.in, col.name) {
   return(data.frame.out)
 }
 
-avg.traffic.ped.bicycle.by.weekday <- GetAvgTrafficVolByCol(traffic.ped.bicycle, "Weekday")
-avg.traffic.ped.bicycle.by.time <- GetAvgTrafficVolByCol(traffic.ped.bicycle, "Time") %>%
-  arrange(Time)
-avg.traffic.ped.bicycle.by.month <- GetAvgTrafficVolByCol(traffic.ped.bicycle, "Month")
-avg.traffic.ped.bicycle.by.quarter <- GetAvgTrafficVolByCol(traffic.ped.bicycle, "Quarter")
-avg.traffic.ped.bicycle.by.day <- GetAvgTrafficVolByCol(traffic.ped.bicycle, "Date")
+avg.traffic.ped.bicycle.by.weekday <-
+  GetAvgTrafficVolByCol(traffic.ped.bicycle, "Weekday")
+avg.traffic.ped.bicycle.by.time <-
+  GetAvgTrafficVolByCol(traffic.ped.bicycle, "Time") %>%
+    arrange(Time)
+avg.traffic.ped.bicycle.by.month <-
+  GetAvgTrafficVolByCol(traffic.ped.bicycle, "Month")
+avg.traffic.ped.bicycle.by.quarter <-
+  GetAvgTrafficVolByCol(traffic.ped.bicycle, "Quarter")
+avg.traffic.ped.bicycle.by.day <-
+  GetAvgTrafficVolByCol(traffic.ped.bicycle, "Date")
 
 #https://github.com/vega/vega-datasets/blob/gh-pages/data/weather.csv
 seattle.weather <- read.csv("data/weather.csv", stringsAsFactors=FALSE) %>%
@@ -149,7 +167,8 @@ seattle.weather <- read.csv("data/weather.csv", stringsAsFactors=FALSE) %>%
     Date = format(as.Date(as.character(Date)), "%m/%d/%Y"),
     temp_avg = (temp_max - temp_min) / 2
   ) %>%
-  select("Date", "precipitation", "temp_max", "temp_min", "temp_avg", "wind", "weather")
+  select("Date", "precipitation", "temp_max", "temp_min", "temp_avg", "wind",
+    "weather")
 
 traffic.with.weather <- traffic.ped.bicycle %>%
   inner_join(seattle.weather, by = "Date")
