@@ -2,6 +2,7 @@ require(ggplot2)
 require(ggmap)
 require(rgdal)
 require(dplyr)
+require(scales)
 
 source("traffic_data_processing.R")
 

@@ -11,6 +11,7 @@ library(maps)
 library(shiny)
 library(rgdal)
 library(ggmap)
+library(scales)
 
 source("ui.R")
 source("server.R")
