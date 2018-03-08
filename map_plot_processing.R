@@ -31,7 +31,12 @@ PlotSeattleTraffic <- function(data) {
         color = location.name,
         size = avg.traffic.vol
       ),
-    )
+    ) +
+    labs(
+      title = "Map of Seattle with Key Traffic Locations",
+      x = "Longitude",
+      y = "Latitude"
+  )
   return(seattle.street.map)
 }
 
@@ -61,7 +66,7 @@ PlotAvgTrafficByFactor <- function(data, factor) {
   labs(
     title = paste("Average Traffic Volume by", factor),
     x = factor,
-    y = "Traffic Volume (log10 scale)"
+    y = "Traffic Volume (people/bikes) (log10 scale)"
   )
   return(plot.out)
 }
@@ -101,7 +106,7 @@ PlotAvgTrafficByWeather <- function(data) {
   labs(
     title = "Average Monthly Traffic Volume By Weather Condition",
     x = "Month",
-    y = "Traffic Volume"
+    y = "Traffic Volume (people/bikes)"
   )
   return(weather.traffic.plot)
 }
