@@ -16,5 +16,9 @@ server <- function(input, output) {
     weekday.traffic.plot
   })
 
+  output$month.traffic.graph <- renderPlot({
+    month.traffic.plot
+  })
+
 }
 
