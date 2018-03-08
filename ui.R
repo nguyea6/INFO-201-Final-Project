@@ -98,10 +98,11 @@ ui <- fluidPage(
         tags$li(tags$a(href="https://data.seattle.gov/Transportation/Burke-Gilman-Trail-north-of-NE-70th-St-Bike-and-Pe/2z5v-ecg8", "Burke Gilman Trail north of NE 70th St Bike and Ped Counter")),
         tags$li(tags$a(href="https://data.seattle.gov/dataset/City-Of-Seattle-Zoning/2hat-teay", "City Of Seattle Zoning")),
         tags$li("D. Kahle and H. Wickham. ggmap: Spatial Visualization with ggplot2.
-        The R Journal, 5(1), 144-161. URL
-        http://journal.r-project.org/archive/2013-1/kahle-wickham.pdf"),
+          The R Journal, 5(1), 144-161. URL
+          http://journal.r-project.org/archive/2013-1/kahle-wickham.pdf"),
         tags$li(tags$a(href="https://data.seattle.gov/Transportation/Elliott-Bay-Trail-in-Myrtle-Edwards-Park/4qej-qvrz", "Elliott Bay Trail in Myrtle Edwards Park")),
         tags$li(tags$a(href="https://data.seattle.gov/Transportation/Fremont-Bridge-Hourly-Bicycle-Counts-by-Month-Octo/65db-xm6k", "Fremont Bridge Hourly Bicycle Counts by Month October 2012 to present")),
+        tags$li("Location coordinate data was taken from ", tags$a(href="https://www.google.com/maps/place/Seattle,+WA/@47.6129432,-122.4821475", "Google Maps"), "."),
         tags$li(tags$a(href="https://data.seattle.gov/Transportation/NW-58th-St-Greenway-at-22nd-Ave-NW-Bike-Counter/47yq-6ugv", "NW 58th St Greenway at 22nd Ave NW Bike Counter")),
         tags$li(tags$a(href="https://github.com/vega/vega-datasets/blob/gh-pages/data/weather.csv", "Weather Data"))
       )
