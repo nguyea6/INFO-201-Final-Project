@@ -17,9 +17,15 @@ ui <- fluidPage(
       h3("Summary:"),
       p("Our team's data report will attempt to present data relating to traffic around Seattle and how that traffic may be affected by various factors such as day of the week, season, and weather."),
       h3("Motivation:"),
-      pre("Motivation goes here"),
+      pre("Before starting this project, we became fully aware of the difficulties in transportation due 
+          to traffic/road congestion in major cities like Seattle, so we wanted to analyze how alternatitive
+          forms of transportation including biking and walking are affected by various factors. These include
+          days of the week, weather and road conditions, and we can correlate variations in these factors
+          with bike and pedestrian traffic volumes. We can then use these trends to predict future trends
+          in these alternative forms of transportation in order to potentially introduce new infrastructure 
+          to accommodate these forms of transportation."),
       h3("Limitations:"),
-      pre("Limitations go here.")
+      pre("Limitations in")
     ),
 
     tabPanel("Map",
