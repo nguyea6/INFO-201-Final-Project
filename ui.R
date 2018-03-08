@@ -36,19 +36,12 @@ ui <- fluidPage(
         available for those features.")
     ),
 
-    tabPanel("Map",
-      pre("Heat map goes here"),
-      plotOutput('seattle.map'),
-      sliderInput("animation", "Looping Animation:",
-        min = 1, max = 2000,
-        value = 1, step = 100,
-        animate =
-          animationOptions(interval = 300, loop = TRUE)
-      )
+    tabPanel("Point Map",
+      plotOutput('seattle.map', width = "100%"),
+      selectInput("day.of.week", label = "Weekday:", choices = weekday.list)
     ),
 
-    tabPanel("Traffic Over Time Graph",
-      pre("Graph of traffic vols per street vs date goes here"),
+    tabPanel("Traffic vs. Time Graph",
       plotOutput('weekday.traffic.graph', width = "100%"),
       plotOutput('month.traffic.graph'),
       #plotOutput('quarter.traffic.graph'),
@@ -56,8 +49,7 @@ ui <- fluidPage(
       p('The figure above shows average daily traffic volume at chosen data collection locations by month. Similar to the volumes for weekday vs weekends, designated pedestrian and bike trails ("Broad way cycle track", "Elliott bay trail", and "Fremont bridge") have a significantly higher traffic volume throughout the year compared to other locations. The main variable considered by the different months is weather and temperature conditions. As seen in all locations on the graph, there is a very strong correlation between months with warmer temperatures/lowered precipitation and traffic volume. On average, the difference between months with lowest traffic volumes were about 50% of months with highest traffic volumes, and this is generally true for all data collection locations. One erratic variation from the normal trend is an influx of pedestrians and cyclists during September and October compared to the summer months. This may be explained by the close proximity of a college to the trail, so volumes would be expected to increase as classes begin, normally in September to October. However, not many fluctuations are present from the overall trend that warmer months correlate to increased traffic volumes in all locations.')
     ),
 
-    tabPanel("Traffic Compared to Weather Graph",
-      pre("traffic vs weather graph with filters goes here"),
+    tabPanel("Traffic vs. Weather Conditions Graph",
       sidebarLayout(
 
         sidebarPanel(

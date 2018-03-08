@@ -10,7 +10,7 @@ server <- function(input, output) {
 
   #FilterWeatherTraffic <- function(x.var, x.min, x.max, filtered.weather) {
 
-  filtered.data <- reactive({
+  filtered.weather.traffic.data <- reactive({
     if(input$weather.condition == "All") {
       return(weather.traffic.summary)
     } else {
@@ -20,8 +20,14 @@ server <- function(input, output) {
     }
   })
 
+  filtered.weekday.traffic.data <- reactive({
+    avg.traffic.ped.bicycle.by.weekday %>%
+      filter(Weekday == input$day.of.week) %>%
+      return()
+  })
+
   output$seattle.map <- renderPlot({
-    seattle.street.map
+    PlotSeattleTraffic(filtered.weekday.traffic.data())
   })
 
   output$weekday.traffic.graph <- renderPlot({
@@ -37,7 +43,7 @@ server <- function(input, output) {
   })
 
   output$weather.traffic.graph <- renderPlot({
-    PlotAvgTrafficByWeather(filtered.data())
+    PlotAvgTrafficByWeather(filtered.weather.traffic.data())
   })
 
 }

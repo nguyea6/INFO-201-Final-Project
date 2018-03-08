@@ -134,6 +134,8 @@ GetAvgTrafficVolByCol <- function(data.frame.in, col.name) {
 }
 
 avg.traffic.ped.bicycle.by.weekday <- GetAvgTrafficVolByCol(traffic.ped.bicycle, "Weekday")
+avg.traffic.ped.bicycle.by.time <- GetAvgTrafficVolByCol(traffic.ped.bicycle, "Time") %>%
+  arrange(Time)
 avg.traffic.ped.bicycle.by.month <- GetAvgTrafficVolByCol(traffic.ped.bicycle, "Month")
 avg.traffic.ped.bicycle.by.quarter <- GetAvgTrafficVolByCol(traffic.ped.bicycle, "Quarter")
 avg.traffic.ped.bicycle.by.day <- GetAvgTrafficVolByCol(traffic.ped.bicycle, "Date")

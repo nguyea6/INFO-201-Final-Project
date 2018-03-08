@@ -11,17 +11,30 @@ source("data_processing.R")
 seattle.shape.data <- readOGR("data/City_of_Seattle_Zoning/WGS84/", "City_of_Seattle_Zoning") %>%
   fortify()
 
-seattle.street.map <- ggplot() +
-  geom_path(
-    data = seattle.shape.data,
-    aes(
-      x = long,
-      y = lat,
-      group = group
-    ),
-    color = "dark gray"
-  ) +
-  coord_map()
+PlotSeattleTraffic <- function(data) {
+  seattle.street.map <- ggplot() +
+    geom_path(
+      data = seattle.shape.data,
+      aes(
+        x = long,
+        y = lat,
+        group = group
+      ),
+      color = "dark gray"
+    ) +
+    coord_map() +
+    geom_point(
+      data = data,
+      mapping = aes(
+        x = long,
+        y = lat,
+        color = location.name,
+        size = avg.traffic.vol
+      ),
+    )
+  return(seattle.street.map)
+}
+
 
 PlotAvgTrafficByFactor <- function(data, factor) {
   plot.out <- ggplot(
